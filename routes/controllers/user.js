@@ -26,13 +26,20 @@ export const getHospital = async (req, res) => {
     const response = await axios.get(queryURL);
     const fetchedData = await response.data;
     const centers = fetchedData.centers;
+    // console.log(centers);
 
     //filtering
     const newArray = centers.filter(function (e) {
       return e.name.match(RegExp(searchString, "i"));
     });
 
-    const trimmedArray = newArray.slice(limit);
+ 
+    let trimmedArray = [];
+    if(newArray.length > limit) {
+      trimmedArray  = newArray.slice(limit);
+    }else{
+      trimmedArray  = newArray;
+    }
 
     const result = trimmedArray.map((e) => {
       return { center_id: e.center_id, name: e.name };
